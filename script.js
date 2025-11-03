@@ -89,7 +89,7 @@ const trackList = [
         duration: '1:50',  //曲の時間
         // 🚨 ここを新しいサーバーの楽曲URLに変更してください
         src: 'https://onsou2025.github.io/Music-Station/Music/Σετςυиαι  ERROR ; 404.mp3',  //楽曲URL
-        art: 'https://onsou2025.github.io/Music-Station/images/Σετςυиαι  ERROR ; 404.png', //楽曲画像
+        art: 'https://onsou2025.github.io/Music-Station/images/Σετςυиαι ERROR ; 404.png', //楽曲画像
         composer: 'カンキツ',  //作曲者
         chartMaker: 'カンキツ',  //譜面制作者
         description: '数少ないLUNATIC楽曲の1つで、圧倒的な乱打で圧倒してきます。'
@@ -328,7 +328,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
-
 
 
 
