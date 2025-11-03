@@ -96,7 +96,7 @@ body {
     transition: all 0.3s ease;
 }
 .member-card:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 4px, 0, 0.1);
     transform: translateY(-8px);
 }
 .char-card:hover .char-img {
@@ -248,20 +248,117 @@ body {
 #seek-bar, #volume-slider {
     -webkit-appearance: none;
     appearance: none;
-    height: 4px;
+    height: 12px; /* 高さを増やしてプログレスバーを中央に配置しやすく */
     background: transparent;
     cursor: pointer;
+    margin: 0; /* マージンをリセット */
+    padding: 0; /* パディングをリセット */
+    /* シークバーのカスタムプロパティを定義 */
+    --track-color: #e2e8f0; /* bg-gray-200 */
+    --progress-color: #06b6d4; /* bg-cyan-500 */
+    --thumb-color: #06b6d4;
 }
+
+/* スライダーのトラック（背景） */
+/* WebKit (Chrome/Safari) 用: トラックを透明にして、linear-gradientを表示させる */
+#seek-bar::-webkit-slider-runnable-track,
+#volume-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px; /* トラックの太さ */
+    background: transparent; /* 👈 ここを transparent に修正 */
+    border-radius: 2px;
+}
+/* Firefox 用 */
+#seek-bar::-moz-range-track,
+#volume-slider::-moz-range-track {
+    width: 100%;
+    height: 4px;
+    background: var(--track-color);
+    border-radius: 2px;
+}
+
 /* スライダーのつまみ */
-#seek-bar::-webkit-slider-thumb, #volume-slider::-webkit-slider-thumb {
+#seek-bar::-webkit-slider-thumb,
+#volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
+    width: 12px; /* 通常時のサイズ */
+    height: 12px;
+    border-radius: 50%;
+    background: var(--thumb-color);
+    cursor: pointer;
+    margin-top: -4px; /* トラックを中央に配置するための調整 */
+    transition: transform 0.2s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+    opacity: 0; /* シークバーのつまみは通常非表示 */
+}
+/* 音量スライダーのつまみは常時表示 */
+#volume-slider::-webkit-slider-thumb {
+    opacity: 1;
+}
+
+/* シークバーのつまみはホバー時またはアクティブ時のみ表示 */
+#seek-bar:hover::-webkit-slider-thumb,
+#seek-bar:active::-webkit-slider-thumb {
+    opacity: 1;
+}
+
+/* Firefox のつまみ */
+#seek-bar::-moz-range-thumb,
+#volume-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: none; /* Firefoxのデフォルトの枠線を削除 */
+    border-radius: 50%;
+    background: var(--thumb-color);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    opacity: 0;
+}
+/* Firefox のシークバーのつまみはホバー時またはアクティブ時のみ表示 */
+#seek-bar:hover::-moz-range-thumb,
+#seek-bar:active::-moz-range-thumb {
+    opacity: 1;
+}
+/* Firefox の音量スライダーのつまみは常時表示 */
+#volume-slider::-moz-range-thumb {
+    opacity: 1;
+}
+
+/* ホバー時につまみを拡大（YouTube Music風） */
+#seek-bar:hover::-webkit-slider-thumb,
+#seek-bar:active::-webkit-slider-thumb {
     width: 16px;
     height: 16px;
-    border-radius: 50%;
-    background: #06b6d4; /* bg-cyan-500 */
-    cursor: pointer;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    margin-top: -6px; /* 拡大したサイズに合わせて調整 */
+}
+#seek-bar:hover::-moz-range-thumb,
+#seek-bar:active::-moz-range-thumb {
+    transform: scale(1.33);
+}
+
+/* プログレス表示（音量スライダー用） */
+#volume-slider {
+    /* CSSカスタムプロパティで進捗を表現 */
+    background: linear-gradient(to right, var(--progress-color) 0%, var(--progress-color) var(--volume-progress, 100%), var(--track-color) var(--volume-progress, 100%), var(--track-color) 100%);
+    border-radius: 2px;
+    height: 4px;
+    margin-top: 4px;
+}
+
+/* 既存のシークバーのスタイルを上書き */
+.space-y-4 > .relative.h-1 { /* シークバーの親要素の div.relative.h-1 を指す */
+    height: 4px !important; /* シークバーのトラックの高さを4pxに統一 */
+    background-color: #e2e8f0; /* トラックの背景色 */
+    border-radius: 2px;
+}
+#seek-bar.w-full.absolute {
+    top: 0;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    /* シークバーにCSSでプログレスを実装 */
+    background: linear-gradient(to right, var(--progress-color) 0%, var(--progress-color) var(--seek-progress, 0%), var(--track-color) var(--seek-progress, 0%), var(--track-color) 100%);
+    opacity: 1; /* 不透明度を1に戻す */
+    height: 4px;
 }
 
 /* sticky ヘッダーと被らないように調整 */
