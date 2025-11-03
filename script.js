@@ -93,7 +93,161 @@ const trackList = [
         composer: 'カンキツ',  //作曲者
         chartMaker: 'カンキツ',  //譜面制作者
         description: '数少ないLUNATIC楽曲の1つで、圧倒的な乱打で圧倒してきます。'
-    }
+    },
+    { 
+        title: '焔ノ迷宮',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '1:18',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/焔ノ迷宮.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/焔ノ迷宮.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'はすにねこ',  //譜面制作者
+        description: '迷宮シリーズ第1弾。'
+    },
+    { 
+        title: '冰ノ迷宮',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '3:20',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/冰ノ迷宮.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/冰ノ迷宮.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'はすにねこvsカンキツ',  //譜面制作者
+        description: '迷宮シリーズ第2弾。'
+    },
+    { 
+        title: 'Block',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '3:45',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/Block.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/Block.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'カンキツ',  //譜面制作者
+        description: '初心者から中級者にお勧めの譜面難易度です。'
+    },
+    { 
+        title: 'β',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '2:09',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/β.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/β.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'カンキツvsはすにねこ',  //譜面制作者
+        description: 'βからαへB,N,A,E,M,R,L,A総合イベント準ボス曲。'
+    },
+    { 
+        title: 'σ',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '1:35',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/σ.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/σ.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'はすにねこvsカンキツ',  //譜面制作者
+        description: 'βからαへB,N,A,E,M,R,L,A総合イベントボス曲。'
+    },
+    { 
+        title: 'os-103',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '1:10',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/os-103.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/os-103.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: null,  //譜面制作者
+        description: '音奏書き下ろしだが、とある都合で没曲となった。'
+    },
+    { 
+        title: '1w1',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '2:54',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/1w1.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/1w1.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: null,  //譜面制作者
+        description: '音奏書き下ろしだが、とある都合で没曲となった。'
+    },
+    { 
+        title: 'ACCEL_ZERO_1.0',  //曲名
+        artist: 'PORAN',  //楽曲クリエイター
+        duration: '2:09',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/ACCEL_ZERO_1.0.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/ACCEL_ZERO_1.0.png', //楽曲画像
+        composer: 'PORAN',  //作曲者
+        chartMaker: null,  //譜面制作者
+        description: '音奏書き下ろしだが、とある都合で没曲となった。'
+    },
+    { 
+        title: '0739715306389',  //曲名
+        artist: 'PORAN',  //楽曲クリエイター
+        duration: '4:00',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/0739715306389.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/0739715306389.png', //楽曲画像
+        composer: 'PORAN',  //作曲者
+        chartMaker: '大福モドキ',  //譜面制作者
+        description: '現在隠されている。'
+    },
+    { 
+        title: 'EX001-G2',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '2:09',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/EX001-G2.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/EX001-G2.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: null,  //譜面制作者
+        description: '音奏書き下ろしだが、とある都合で没曲となった。'
+    },
+    { 
+        title: 'R.N.A',  //曲名
+        artist: 'PORAN',  //楽曲クリエイター
+        duration: '2:13',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/R.N.A.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/R.N.A.png', //楽曲画像
+        composer: 'PORAN',  //作曲者
+        chartMaker: 'カンキツ',  //譜面制作者
+        description: '数少ないLUNATIC楽曲の一つで、LUNATIC初心者にはおすすめの譜面。'
+    },
+    { 
+        title: 'クリスマス？そんなのぶち壊して無くしてやる！',  //曲名
+        artist: 'ポッキー',  //楽曲クリエイター
+        duration: '0:53',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/来年も「ハッピー ・ メリクリ」目指して頑張ります.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/来年も「ハッピー ・ メリクリ」目指して頑張ります.png', //楽曲画像
+        composer: 'ポッキー',  //作曲者
+        chartMaker: 'カンキツ',  //譜面制作者
+        description: '現在隠されている。'
+    },
+    { 
+        title: 'Re.Mjoete',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '3:54',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/Re.Mjoete.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/Re.Mjoete.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'カンキツ',  //譜面制作者
+        description: '初心者にお勧めの譜面。'
+    },
+    { 
+        title: 'メリーさんの羊  音奏ver',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '2:37',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/メリーさんの羊  音奏ver.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/メリーさんの羊.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: '?？?',  //譜面制作者
+        description: '?❓?'
+    },
     /*
     { 
         title: 'テストソング 1 (オリジナルGM)',  //曲名
@@ -328,6 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
 
 
 
