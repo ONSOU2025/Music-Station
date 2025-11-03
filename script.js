@@ -11,8 +11,8 @@ const trackList = [
         artist: 'カンキツ',  //楽曲クリエイター
         duration: '1:58',  //曲の時間
         // 🚨 ここを新しいサーバーの楽曲URLに変更してください
-        src: 'https://onsou2025.github.io/MusicStation/music/Lily Waltz.mp3',  //楽曲URL
-        art: 'https://onsou2025.github.io/MusicStation/images/Lily Waltz.png', //楽曲画像
+        src: 'https://onsou2025.github.io/Music-Station/music/Lily Waltz.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/Lily Waltz.png', //楽曲画像
         composer: 'カンキツ',  //作曲者
         chartMaker: 'カンキツ',  //譜面制作者
         description: '音奏初めてのオリジナル楽曲です。'
@@ -251,3 +251,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
