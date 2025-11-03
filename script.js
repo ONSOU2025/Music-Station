@@ -3,6 +3,10 @@
 const audio = new Audio();
 let currentTrackIndex = 0;
 let isPlaying = false;
+// 【✨ 新規追加】シャッフルとループの状態管理
+let isShuffle = false;
+let isLoop = false;
+let shuffledList = []; // シャッフル後のインデックスリスト
 
 // 音楽データ (ダミーデータ。ご自身の楽曲情報とURLに置き換えてください)
 const trackList = [
@@ -273,11 +277,15 @@ const nextBtn = document.getElementById('next-btn');
 const playerTitle = document.getElementById('player-title');
 const playerArtist = document.getElementById('player-artist');
 const playerAlbumArt = document.getElementById('player-album-art');
-const progressBar = document.getElementById('progress-bar');
+// const progressBar = document.getElementById('progress-bar'); // 削除
 const seekBar = document.getElementById('seek-bar');
 const currentTimeSpan = document.getElementById('current-time');
 const durationSpan = document.getElementById('duration');
 const volumeSlider = document.getElementById('volume-slider');
+
+// 【✨ 新規追加】シャッフルとループボタンのDOM要素
+const shuffleBtn = document.getElementById('shuffle-btn');
+const loopBtn = document.getElementById('loop-btn');
 
 // 詳細情報要素の取得
 const detailComposer = document.getElementById('detail-composer');
@@ -412,20 +420,98 @@ function pauseTrack() {
     if (currentIcon) currentIcon.classList.replace('fa-pause-circle', 'fa-play-circle');
 }
 
+// 【✨ 新規追加】配列をシャッフルするユーティリティ関数（Fisher-Yatesアルゴリズム）
+function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+}
+
+// 【✨ 新規追加】シャッフル再生のON/OFFを切り替え
+function toggleShuffle() {
+    isShuffle = !isShuffle;
+    shuffleBtn.classList.toggle('text-cyan-600', isShuffle);
+    shuffleBtn.classList.toggle('text-gray-500', !isShuffle);
+
+    if (isShuffle) {
+        // 現在再生中の曲を最初にして、残りをシャッフル
+        const trackIndices = trackList.map((_, i) => i);
+        // 現在のトラックのインデックスをリストから削除
+        const currentIndex = trackIndices.indexOf(currentTrackIndex);
+        if (currentIndex > -1) {
+            trackIndices.splice(currentIndex, 1);
+        }
+        // 残りのリストをシャッフル
+        const remainingShuffled = shuffleArray(trackIndices);
+        // 現在のトラックをシャッフルリストの先頭に追加
+        shuffledList = [currentTrackIndex, ...remainingShuffled];
+    } else {
+        shuffledList = []; // シャッフルを解除
+    }
+}
+
+// 【✨ 新規追加】ループ再生のON/OFFを切り替え
+function toggleLoop() {
+    isLoop = !isLoop;
+    loopBtn.classList.toggle('text-cyan-600', isLoop);
+    loopBtn.classList.toggle('text-gray-500', !isLoop);
+    
+    // HTML Audio Element の loop プロパティを制御
+    audio.loop = isLoop;
+}
+
 /**
  * 次のトラックへ
+ * 【✅ 修正】シャッフルロジックを追加
  */
 function nextTrack() {
-    currentTrackIndex = (currentTrackIndex + 1) % trackList.length;
+    if (isShuffle && shuffledList.length > 0) {
+        let currentIndexInShuffle = shuffledList.indexOf(currentTrackIndex);
+        
+        // シャッフルリストの次のインデックスを計算（リストの終端に達したら、現在の曲を除いて再度シャッフルして最初に戻る）
+        let nextIndexInShuffle = currentIndexInShuffle + 1;
+        
+        if (nextIndexInShuffle >= shuffledList.length) {
+            // シャッフルリストの最後まで行ったら、現在の曲を除いて再度シャッフル
+            const trackIndices = trackList.map((_, i) => i).filter(i => i !== currentTrackIndex);
+            shuffledList = [currentTrackIndex, ...shuffleArray(trackIndices)];
+            nextIndexInShuffle = 1; // 新しいシャッフルリストの2番目 (現在の曲の次) を再生
+        }
+
+        currentTrackIndex = shuffledList[nextIndexInShuffle];
+    } else {
+        // 通常の順次再生
+        currentTrackIndex = (currentTrackIndex + 1) % trackList.length;
+    }
+    
     loadTrack(currentTrackIndex);
     playPauseTrack();
 }
 
 /**
  * 前のトラックへ
+ * 【✅ 修正】シャッフルロジックを追加
  */
 function prevTrack() {
-    currentTrackIndex = (currentTrackIndex - 1 + trackList.length) % trackList.length;
+    if (isShuffle && shuffledList.length > 0) {
+        let currentIndexInShuffle = shuffledList.indexOf(currentTrackIndex);
+        
+        // シャッフルリストの前のインデックスを計算（リストの先頭に達したら、シャッフルリストの最後に移動）
+        let prevIndexInShuffle = currentIndexInShuffle - 1;
+
+        if (prevIndexInShuffle < 0) {
+            prevIndexInShuffle = shuffledList.length - 1;
+        }
+
+        currentTrackIndex = shuffledList[prevIndexInShuffle];
+    } else {
+        // 通常の順次再生
+        currentTrackIndex = (currentTrackIndex - 1 + trackList.length) % trackList.length;
+    }
+
     loadTrack(currentTrackIndex);
     playPauseTrack();
 }
@@ -437,6 +523,11 @@ playPauseBtn.addEventListener('click', playPauseTrack);
 nextBtn.addEventListener('click', nextTrack);
 prevBtn.addEventListener('click', prevTrack);
 
+// 【✨ 新規追加】シャッフルボタンの切り替え
+shuffleBtn.addEventListener('click', toggleShuffle);
+// 【✨ 新規追加】ループボタンの切り替え
+loopBtn.addEventListener('click', toggleLoop);
+
 // オーディオイベント
 audio.addEventListener('play', playTrack);
 audio.addEventListener('pause', pauseTrack);
@@ -445,27 +536,46 @@ audio.addEventListener('timeupdate', () => {
     const { currentTime, duration } = audio;
     if (!isNaN(duration)) {
         const progressPercent = (currentTime / duration) * 100;
-        progressBar.style.width = `${progressPercent}%`;
-        currentTimeSpan.textContent = formatTime(currentTime);
+        
+        // 1. シークバーのつまみ位置を更新 (必須)
         seekBar.value = progressPercent; 
+        
+        // 2. CSSカスタムプロパティでプログレスバーの色付き進捗を更新 (✅ 修正を維持)
+        seekBar.style.setProperty('--seek-progress', `${progressPercent}%`); 
+
+        currentTimeSpan.textContent = formatTime(currentTime);
     }
 });
 
 audio.addEventListener('loadedmetadata', () => {
     durationSpan.textContent = formatTime(audio.duration);
+    
+    // ロード時にシークバーの初期状態を設定
+    seekBar.value = 0;
+    seekBar.style.setProperty('--seek-progress', '0%');
 });
 
-audio.addEventListener('ended', nextTrack);
+// 【✅ 修正】曲が終了したときの動作（ループがONでない場合のみ次の曲へ）
+audio.addEventListener('ended', () => {
+    if (!isLoop) {
+        nextTrack();
+    }
+});
 
 // シーク操作
 seekBar.addEventListener('input', (e) => {
     const seekTo = (e.target.value / 100) * audio.duration; 
     audio.currentTime = seekTo;
+    
+    // ドラッグ中もカスタムプロパティでプログレスを更新
+    e.target.style.setProperty('--seek-progress', `${e.target.value}%`);
 });
 
 // 音量操作
 volumeSlider.addEventListener('input', (e) => {
     audio.volume = e.target.value;
+    // CSSカスタムプロパティで音量スライダーの進捗を更新
+    e.target.style.setProperty('--volume-progress', `${e.target.value * 100}%`);
 });
 
 
@@ -476,15 +586,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (trackList.length > 0) {
         loadTrack(currentTrackIndex);
     }
-    // 初期音量を設定
+    
+    // 初期音量を設定し、プログレスを更新 (✅ 修正を維持)
     if (volumeSlider) {
-        volumeSlider.value = audio.volume;
+        audio.volume = volumeSlider.value; // 初期値（1.0）を設定
+        // CSSカスタムプロパティで初期の音量スライダーの進捗を更新
+        volumeSlider.style.setProperty('--volume-progress', `${volumeSlider.value * 100}%`);
     }
 
 });
-
-
-
-
-
-
