@@ -17,6 +17,83 @@ const trackList = [
         chartMaker: 'カンキツ',  //譜面制作者
         description: '音奏初めてのオリジナル楽曲です。'
     },
+    { 
+        title: 'Rhythmic Pulse',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '1:38',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/Rhythmic Pulse.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/Rhythmic Pulse.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'カンキツ',  //譜面制作者
+        description: '音奏旧階段楽曲。'
+    },
+    { 
+        title: 'Aura Cadenza',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '2:22',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/Aura Cadenza.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/Aura Cadenza.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'カンキツ',  //譜面制作者
+        description: '音奏最長のボス曲です。'
+    },
+    { 
+        title: 'Eternity',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '1:23',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/Eternity.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/Eternity.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'カンキツ',  //譜面制作者
+        description: '比較的難易度が高く、上級者の練習として使われる曲です。'
+    },
+    { 
+        title: 'Emberbloom',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '2:11',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/Emberbloom.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/Emberbloom.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'はすにねこ',  //譜面制作者
+        description: 'MASTERよりRe MASTERの方がなぜか簡単な曲です。'
+    },
+    { 
+        title: '音奏',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '1:07',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/音奏.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/音奏.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'カンキツ',  //譜面制作者
+        description: 'MASTERまでは優しめの難易度で、乱打が多用されている。メインテーマでもある。'
+    },
+    { 
+        title: 'Incandescence',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '2:00',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/Incandescence.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/Incandescence.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: '大福モドキ',  //譜面制作者
+        description: '旧階段に代わる現階段楽曲です。'
+    },
+    { 
+        title: 'Σετςυиαι  ERROR ; 404',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '1:50',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/Σετςυиαι  ERROR ; 404.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/Σετςυиαι  ERROR ; 404.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'カンキツ',  //譜面制作者
+        description: '数少ないLUNATIC楽曲の1つで、圧倒的な乱打で圧倒してきます。'
+    },
     /*
     { 
         title: 'テストソング 1 (オリジナルGM)',  //曲名
@@ -251,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
 
 
 
