@@ -7,15 +7,15 @@ let isPlaying = false;
 // 音楽データ (ダミーデータ。ご自身の楽曲情報とURLに置き換えてください)
 const trackList = [
     { 
-        title: 'テストソング 1 (オリジナルGM)',  //曲名
-        artist: 'クリエイターA',  //楽曲クリエイター
-        duration: '3:45',  //曲の時間
+        title: 'Lily Waltz',  //曲名
+        artist: 'カンキツ',  //楽曲クリエイター
+        duration: '1:58',  //曲の時間
         // 🚨 ここを新しいサーバーの楽曲URLに変更してください
-        src: 'https://onsou2025.github.io/MusicStation/music/test_song_1.mp3',  //楽曲URL
-        art: 'https://onsou2025.github.io/MusicStation/images/track_01_art.webp', //楽曲画像
-        composer: 'Alpha Beat',  //作曲者
-        chartMaker: 'ノァ / Noah',  //譜面制作者
-        description: 'これはテスト用の楽曲です。高速なブレイクビーツとメロディックなシンセが特徴の、アップテンポなフュージョン曲です。音ゲーのオープニングテーマをイメージして作られました。'
+        src: 'https://onsou2025.github.io/MusicStation/music/Lily Waltz.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/MusicStation/images/Lily Waltz.png', //楽曲画像
+        composer: 'カンキツ',  //作曲者
+        chartMaker: 'カンキツ',  //譜面制作者
+        description: '音奏初めてのオリジナル楽曲です。'
     },
     /*
     { 
@@ -24,7 +24,7 @@ const trackList = [
         duration: '3:45',  //曲の時間
         // 🚨 ここを新しいサーバーの楽曲URLに変更してください
         src: 'https://onsou2025.github.io/MusicStation/music/test_song_1.mp3',  //楽曲URL
-        art: 'https://onsou2025.github.io/MusicStation/images/track_01_art.webp', //楽曲画像
+        art: 'https://onsou2025.github.io/MusicStation/images/track_01_art.png', //楽曲画像
         composer: 'Alpha Beat',  //作曲者
         chartMaker: 'ノァ / Noah',  //譜面制作者
         description: 'これはテスト用の楽曲です。高速なブレイクビーツとメロディックなシンセが特徴の、アップテンポなフュージョン曲です。音ゲーのオープニングテーマをイメージして作られました。'
@@ -249,4 +249,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (volumeSlider) {
         volumeSlider.value = audio.volume;
     }
+
 });
