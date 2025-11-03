@@ -93,7 +93,7 @@ const trackList = [
         composer: 'カンキツ',  //作曲者
         chartMaker: 'カンキツ',  //譜面制作者
         description: '数少ないLUNATIC楽曲の1つで、圧倒的な乱打で圧倒してきます。'
-    },
+    }
     /*
     { 
         title: 'テストソング 1 (オリジナルGM)',  //曲名
@@ -328,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
 
 
 
