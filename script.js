@@ -1,0 +1,252 @@
+// --- MUSIC PLAYER LOGIC (音楽プレイヤーロジック) ---
+
+const audio = new Audio();
+let currentTrackIndex = 0;
+let isPlaying = false;
+
+// 音楽データ (ダミーデータ。ご自身の楽曲情報とURLに置き換えてください)
+const trackList = [
+    { 
+        title: 'テストソング 1 (オリジナルGM)',  //曲名
+        artist: 'クリエイターA',  //楽曲クリエイター
+        duration: '3:45',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/MusicStation/music/test_song_1.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/MusicStation/images/track_01_art.webp', //楽曲画像
+        composer: 'Alpha Beat',  //作曲者
+        chartMaker: 'ノァ / Noah',  //譜面制作者
+        description: 'これはテスト用の楽曲です。高速なブレイクビーツとメロディックなシンセが特徴の、アップテンポなフュージョン曲です。音ゲーのオープニングテーマをイメージして作られました。'
+    },
+    /*
+    { 
+        title: 'テストソング 1 (オリジナルGM)',  //曲名
+        artist: 'クリエイターA',  //楽曲クリエイター
+        duration: '3:45',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/MusicStation/music/test_song_1.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/MusicStation/images/track_01_art.webp', //楽曲画像
+        composer: 'Alpha Beat',  //作曲者
+        chartMaker: 'ノァ / Noah',  //譜面制作者
+        description: 'これはテスト用の楽曲です。高速なブレイクビーツとメロディックなシンセが特徴の、アップテンポなフュージョン曲です。音ゲーのオープニングテーマをイメージして作られました。'
+    },
+    */
+];
+
+// DOM要素の取得
+const playlistContainer = document.getElementById('playlist-container');
+const playPauseBtn = document.getElementById('play-pause-btn');
+const playIcon = document.getElementById('play-icon');
+const pauseIcon = document.getElementById('pause-icon');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const playerTitle = document.getElementById('player-title');
+const playerArtist = document.getElementById('player-artist');
+const playerAlbumArt = document.getElementById('player-album-art');
+const progressBar = document.getElementById('progress-bar');
+const seekBar = document.getElementById('seek-bar');
+const currentTimeSpan = document.getElementById('current-time');
+const durationSpan = document.getElementById('duration');
+const volumeSlider = document.getElementById('volume-slider');
+
+// 詳細情報要素の取得
+const detailComposer = document.getElementById('detail-composer');
+const detailChartMaker = document.getElementById('detail-chart-maker');
+const detailChartContainer = document.getElementById('detail-chart-container');
+const detailDescription = document.getElementById('detail-description');
+
+
+/**
+ * 時間（秒）を「m:ss」形式にフォーマット
+ */
+function formatTime(secs) {
+    const minutes = Math.floor(secs / 60);
+    const seconds = Math.floor(secs % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+}
+
+/**
+ * プレイリストを描画
+ */
+function renderPlaylist() {
+    playlistContainer.innerHTML = '';
+    if (trackList.length === 0) {
+        playlistContainer.innerHTML = '<p class="text-center text-gray-500 py-6">現在、楽曲の準備中です。</p>';
+        return;
+    }
+
+    trackList.forEach((track, index) => {
+        const item = document.createElement('div');
+        item.className = `music-item flex items-center justify-between p-3 rounded-lg border border-gray-100 transition-all duration-300 cursor-pointer hover:bg-cyan-50 hover:border-cyan-200`;
+        item.dataset.index = index;
+        item.innerHTML = `
+            <div class="flex items-center min-w-0">
+                <i class="fas fa-play-circle text-lg text-gray-400 mr-3 play-icon flex-shrink-0"></i>
+                <div class="min-w-0 overflow-hidden">
+                    <p class="font-semibold text-gray-900 truncate">${track.title}</p>
+                    <p class="text-sm text-gray-500 truncate">${track.artist}</p>
+                </div>
+            </div>
+            <span class="text-sm text-gray-400 flex-shrink-0">${track.duration}</span>
+        `;
+        playlistContainer.appendChild(item);
+
+        item.addEventListener('click', () => {
+            loadTrack(index);
+            // ユーザー操作による再生 (自動再生ブロック回避)
+            audio.play().catch(error => console.error("Audio play failed:", error));
+        });
+    });
+}
+
+/**
+ * トラックをロードし、プレイヤーUIを更新
+ */
+function loadTrack(index) {
+    currentTrackIndex = index;
+    const track = trackList[index];
+    
+    // UIの更新 (基本情報)
+    playerTitle.textContent = track.title;
+    playerArtist.textContent = track.artist;
+    playerAlbumArt.src = track.art;
+    
+    // UIの更新 (詳細情報)
+    detailComposer.textContent = track.composer || 'N/A';
+    detailDescription.textContent = track.description || '楽曲紹介はまだありません。';
+
+    // 譜面制作者情報の表示/非表示
+    if (track.chartMaker && track.chartMaker.trim() !== '') {
+        detailChartMaker.textContent = track.chartMaker;
+        detailChartContainer.style.display = 'block';
+    } else {
+        detailChartContainer.style.display = 'none';
+    }
+
+    // オーディオ要素の更新
+    audio.src = track.src;
+    audio.load();
+
+    // プレイリストのハイライト更新
+    document.querySelectorAll('.music-item').forEach((item, i) => {
+        item.classList.remove('active');
+        item.querySelector('.play-icon').classList.replace('fa-pause-circle', 'fa-play-circle');
+    });
+    const currentItem = document.querySelector(`.music-item[data-index="${index}"]`);
+    if (currentItem) {
+        currentItem.classList.add('active');
+        if (isPlaying) { 
+             currentItem.querySelector('.play-icon').classList.replace('fa-play-circle', 'fa-pause-circle');
+        }
+    }
+}
+
+/**
+ * 再生または一時停止を切り替える
+ */
+function playPauseTrack() {
+    if (audio.src === '' || !audio.src) {
+        loadTrack(currentTrackIndex);
+    }
+
+    if (isPlaying) {
+        audio.pause();
+    } else {
+        audio.play().catch(error => {
+            console.error("Audio play failed:", error);
+        });
+    }
+}
+
+/**
+ * 再生を開始
+ */
+function playTrack() {
+    isPlaying = true;
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'block';
+    // プレイリストアイコンを更新
+    const currentIcon = document.querySelector(`.music-item[data-index="${currentTrackIndex}"] .play-icon`);
+    if (currentIcon) currentIcon.classList.replace('fa-play-circle', 'fa-pause-circle');
+}
+
+/**
+ * 一時停止
+ */
+function pauseTrack() {
+    isPlaying = false;
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+    // プレイリストアイコンを更新
+    const currentIcon = document.querySelector(`.music-item[data-index="${currentTrackIndex}"] .play-icon`);
+    if (currentIcon) currentIcon.classList.replace('fa-pause-circle', 'fa-play-circle');
+}
+
+/**
+ * 次のトラックへ
+ */
+function nextTrack() {
+    currentTrackIndex = (currentTrackIndex + 1) % trackList.length;
+    loadTrack(currentTrackIndex);
+    playPauseTrack();
+}
+
+/**
+ * 前のトラックへ
+ */
+function prevTrack() {
+    currentTrackIndex = (currentTrackIndex - 1 + trackList.length) % trackList.length;
+    loadTrack(currentTrackIndex);
+    playPauseTrack();
+}
+
+// --- イベントリスナー ---
+
+// プレイヤーボタン
+playPauseBtn.addEventListener('click', playPauseTrack);
+nextBtn.addEventListener('click', nextTrack);
+prevBtn.addEventListener('click', prevTrack);
+
+// オーディオイベント
+audio.addEventListener('play', playTrack);
+audio.addEventListener('pause', pauseTrack);
+
+audio.addEventListener('timeupdate', () => {
+    const { currentTime, duration } = audio;
+    if (!isNaN(duration)) {
+        const progressPercent = (currentTime / duration) * 100;
+        progressBar.style.width = `${progressPercent}%`;
+        currentTimeSpan.textContent = formatTime(currentTime);
+        seekBar.value = progressPercent; 
+    }
+});
+
+audio.addEventListener('loadedmetadata', () => {
+    durationSpan.textContent = formatTime(audio.duration);
+});
+
+audio.addEventListener('ended', nextTrack);
+
+// シーク操作
+seekBar.addEventListener('input', (e) => {
+    const seekTo = (e.target.value / 100) * audio.duration; 
+    audio.currentTime = seekTo;
+});
+
+// 音量操作
+volumeSlider.addEventListener('input', (e) => {
+    audio.volume = e.target.value;
+});
+
+
+// --- 初期化 ---
+document.addEventListener('DOMContentLoaded', () => {
+    // 音楽プレイヤーの初期化
+    renderPlaylist();
+    if (trackList.length > 0) {
+        loadTrack(currentTrackIndex);
+    }
+    // 初期音量を設定
+    if (volumeSlider) {
+        volumeSlider.value = audio.volume;
+    }
+});

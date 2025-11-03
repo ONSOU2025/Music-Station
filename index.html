@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Original Game Music Station | 音奏 -ONSOU-</title>
+    <link rel="icon" href="音奏ロゴ.webp" type="image/webp">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-gray-900">
+
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-95 transition-all duration-300 shadow-md" id="navbar">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="https://so-ma-web.github.io/onsou-2025/" class="flex items-center space-x-2">
+                <i class="fas fa-arrow-left text-xl text-gray-600 hover:text-cyan-600"></i>
+                <span class="text-xl font-bold text-gray-900 tracking-wider">音奏 -ONSOU- へ戻る</span>
+            </a>
+            <span class="text-xl font-bold text-cyan-600 hidden sm:block">MUSIC STATION</span>
+            <div class="w-[100px]"></div>
+        </div>
+    </nav>
+    
+    <main class="pt-24 min-h-screen">
+        <section id="music-station" class="section visible p-8 md:p-16">
+            <div class="container mx-auto px-4">
+                <h1 class="text-4xl font-bold text-center mb-12 text-gray-900">Original Game Music Station</h1>
+                
+                <div class="max-w-6xl mx-auto grid lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 bg-white rounded-lg p-6 shadow-xl border border-gray-200">
+                        <h2 class="text-2xl font-bold mb-4 flex items-center text-gray-800">
+                            <i class="fas fa-list-music text-cyan-500 mr-3"></i> プレイリスト
+                        </h2>
+                        <div id="playlist-container" class="space-y-2 max-h-[65vh] overflow-y-auto pr-2">
+                            </div>
+                    </div>
+
+                    <div class="lg:col-span-1 bg-white rounded-lg p-6 shadow-xl border border-gray-200 sticky top-24 h-fit">
+                        <h2 class="text-2xl font-bold mb-4 flex items-center text-gray-800">
+                            <i class="fas fa-compact-disc text-cyan-500 mr-3"></i> Now Playing
+                        </h2>
+                        
+                        <div class="text-center mb-6">
+                            <img id="player-album-art" src="https://placehold.co/300x300/e2e8f0/1a202c?text=Album+Art" alt="アルバムアート" class="w-full h-auto object-cover rounded-lg shadow-md mb-4 aspect-square">
+                            <h4 id="player-title" class="text-xl font-bold text-gray-900 mb-1">楽曲タイトル</h4>
+                            <p id="player-artist" class="text-md text-cyan-600">クリエイター名</p>
+                        </div>
+
+                        <div id="track-details" class="border-t border-gray-200 pt-4 mt-4 space-y-3">
+                            <h5 class="text-lg font-bold text-gray-800 border-b border-cyan-100 pb-1">楽曲情報</h5>
+                            
+                            <div>
+                                <p class="text-sm font-semibold text-gray-700">作曲/BGM:</p>
+                                <p id="detail-composer" class="text-md text-gray-900 ml-2 italic">---</p>
+                            </div>
+                            
+                            <div id="detail-chart-container" class="mt-2" style="display: none;">
+                                <p class="text-sm font-semibold text-gray-700">譜面制作:</p>
+                                <p id="detail-chart-maker" class="text-md text-gray-900 ml-2 italic">---</p>
+                            </div>
+
+                            <div class="pt-2">
+                                <p class="text-sm font-semibold text-gray-700">紹介:</p>
+                                <p id="detail-description" class="text-sm text-gray-700 leading-relaxed ml-2 text-justify">ここに楽曲の紹介文が表示されます。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4 pt-6">
+                            <div class="relative h-1 bg-gray-200 rounded-full">
+                                <div id="progress-bar" class="absolute h-full bg-cyan-500 rounded-full w-0 transition-all duration-100 ease-linear"></div>
+                                <input type="range" id="seek-bar" min="0" max="100" value="0" class="w-full absolute top-0 -mt-2 cursor-pointer opacity-0 h-4">
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-500">
+                                <span id="current-time">0:00</span>
+                                <span id="duration">0:00</span>
+                            </div>
+                            
+                            <div class="flex justify-center items-center space-x-6">
+                                <button id="prev-btn" class="text-gray-500 hover:text-cyan-600 transition-colors duration-300">
+                                    <i class="fas fa-backward text-2xl"></i>
+                                </button>
+                                <button id="play-pause-btn" class="w-16 h-16 rounded-full bg-cyan-500 text-white flex items-center justify-center shadow-lg hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105">
+                                    <i id="play-icon" class="fas fa-play text-3xl ml-1"></i>
+                                    <i id="pause-icon" class="fas fa-pause text-3xl" style="display: none;"></i>
+                                </button>
+                                <button id="next-btn" class="text-gray-500 hover:text-cyan-600 transition-colors duration-300">
+                                    <i class="fas fa-forward text-2xl"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2 text-gray-500 pt-2">
+                                <i class="fas fa-volume-down"></i>
+                                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" class="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                <i class="fas fa-volume-up"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-100 text-gray-600 text-center py-8 border-t border-gray-200 mt-12">
+        <p>&copy; 2025 ONSOU Project. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
