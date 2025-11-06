@@ -330,21 +330,20 @@ function renderPlaylist() {
         playlistContainer.appendChild(item);
 
         item.addEventListener('click', () => {
-            // 【✅ 修正ポイント1】すぐに再生するのではなく、playPauseTrackを呼ぶことで統一された再生ロジックを使う
+            // 【✅ 修正ポイント1】非同期再生ロジックを削除し、クリックイベント内で即時再生を試みる
             loadTrack(index);
-            playPauseTrack();
-            // audio.play().catch(error => console.error("Audio play failed:", error)); // 削除
+            // ユーザー操作の直後にplay()を呼び出し、ブラウザの自動再生ポリシーを回避
+            audio.play().catch(error => console.error("Audio play failed on playlist click:", error)); 
         });
     });
 }
 
 /**
  * トラックをロードし、プレイヤーUIを更新
- * 【✅ 修正】オーディオがロードされた後に自動再生を試みるロジックを追加
+ * 【✅ 修正】非同期での自動再生ロジックを削除
  */
 function loadTrack(index) {
-    // 【✨ 修正ポイント2】現在の再生状態を保持
-    const wasPlaying = isPlaying; 
+    // const wasPlaying = isPlaying; // 削除
 
     // 既存の再生を停止し、バグを防ぐ
     audio.pause();
@@ -385,35 +384,18 @@ function loadTrack(index) {
         currentItem.classList.add('active');
     }
 
-    // 【✨ 修正ポイント3】以前再生中だった場合、オーディオが再生可能になったら自動で再生を再開
-    // イベントリスナーを定義 (一度だけ実行されるように)
-    const attemptPlay = function() {
-        // イベントリスナーを削除 (一度きりの実行のため)
-        audio.removeEventListener('canplaythrough', attemptPlay);
-        
-        // 再生を試みる
-        audio.play().catch(error => {
-            console.error("Auto play failed after loading:", error);
-            // 再生に失敗した場合は、isPlaying状態とUIをリセット
-            pauseTrack();
-        });
-    };
-    
-    // ロードが完了したら自動再生を試みる
-    if (wasPlaying) {
-        // 新しいリスナーを追加
-        audio.addEventListener('canplaythrough', attemptPlay);
-    }
+    // 【✅ 修正】非同期での自動再生ロジックを削除
+    // if (wasPlaying) { audio.addEventListener('canplaythrough', attemptPlay); } などのロジックを削除
 }
 
 /**
  * 再生または一時停止を切り替える
- * 【✅ 修正】isPlayingがfalseの時、loadTrackによってcanplaythroughイベントが設定されている可能性を考慮
  */
 function playPauseTrack() {
     if (audio.src === '' || !audio.src) {
         loadTrack(currentTrackIndex);
-        // loadTrack内でcanplaythroughリスナーが設定され、再生が試みられる
+        // ロード後、すぐに再生を試みる
+        audio.play().catch(error => console.error("Audio play failed on play/pause click:", error));
         return;
     }
 
@@ -520,8 +502,8 @@ function nextTrack() {
     }
     
     loadTrack(currentTrackIndex);
-    // 【✅ 修正】loadTrack内で自動再生を試みるため、ここでは不要
-    // playPauseTrack(); 
+    // 【✅ 修正ポイント3】次の曲への切り替え後も再生を維持
+    audio.play().catch(error => console.error("Auto play failed on next track:", error)); 
 }
 
 /**
@@ -545,8 +527,8 @@ function prevTrack() {
     }
 
     loadTrack(currentTrackIndex);
-    // 【✅ 修正】loadTrack内で自動再生を試みるため、ここでは不要
-    // playPauseTrack();
+    // 【✅ 修正ポイント3】前の曲への切り替え後も再生を維持
+    audio.play().catch(error => console.error("Auto play failed on previous track:", error));
 }
 
 // --- イベントリスナー ---
