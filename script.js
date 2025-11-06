@@ -330,21 +330,26 @@ function renderPlaylist() {
         playlistContainer.appendChild(item);
 
         item.addEventListener('click', () => {
+            // 【✅ 修正ポイント1】すぐに再生するのではなく、playPauseTrackを呼ぶことで統一された再生ロジックを使う
             loadTrack(index);
-            // ユーザー操作による再生 (自動再生ブロック回避)
-            audio.play().catch(error => console.error("Audio play failed:", error));
+            playPauseTrack();
+            // audio.play().catch(error => console.error("Audio play failed:", error)); // 削除
         });
     });
 }
 
 /**
  * トラックをロードし、プレイヤーUIを更新
- * 【✅ 修正】再生中に曲を変更した際のバグを防ぐため、最初にオーディオを停止する処理を追加
+ * 【✅ 修正】オーディオがロードされた後に自動再生を試みるロジックを追加
  */
 function loadTrack(index) {
+    // 【✨ 修正ポイント2】現在の再生状態を保持
+    const wasPlaying = isPlaying; 
+
     // 既存の再生を停止し、バグを防ぐ
     audio.pause();
     audio.currentTime = 0; // 再生位置をリセット
+    pauseTrack(); // UIを一時停止状態にリセット
 
     currentTrackIndex = index;
     const track = trackList[index];
@@ -378,24 +383,48 @@ function loadTrack(index) {
     const currentItem = document.querySelector(`.music-item[data-index="${index}"]`);
     if (currentItem) {
         currentItem.classList.add('active');
-        // loadTrackの後にすぐに再生される可能性があるため、isPlayingの状態はここではチェックしない
-        // 再生はクリックイベントやplayPauseTrack()に任せる
+    }
+
+    // 【✨ 修正ポイント3】以前再生中だった場合、オーディオが再生可能になったら自動で再生を再開
+    // イベントリスナーを定義 (一度だけ実行されるように)
+    const attemptPlay = function() {
+        // イベントリスナーを削除 (一度きりの実行のため)
+        audio.removeEventListener('canplaythrough', attemptPlay);
+        
+        // 再生を試みる
+        audio.play().catch(error => {
+            console.error("Auto play failed after loading:", error);
+            // 再生に失敗した場合は、isPlaying状態とUIをリセット
+            pauseTrack();
+        });
+    };
+    
+    // ロードが完了したら自動再生を試みる
+    if (wasPlaying) {
+        // 新しいリスナーを追加
+        audio.addEventListener('canplaythrough', attemptPlay);
     }
 }
 
 /**
  * 再生または一時停止を切り替える
+ * 【✅ 修正】isPlayingがfalseの時、loadTrackによってcanplaythroughイベントが設定されている可能性を考慮
  */
 function playPauseTrack() {
     if (audio.src === '' || !audio.src) {
         loadTrack(currentTrackIndex);
+        // loadTrack内でcanplaythroughリスナーが設定され、再生が試みられる
+        return;
     }
 
     if (isPlaying) {
         audio.pause();
     } else {
+        // 再生ボタンが押された場合、すぐに再生を試みる
         audio.play().catch(error => {
             console.error("Audio play failed:", error);
+            // エラーが発生した場合は、UIを確実に一時停止状態に保つ
+            pauseTrack();
         });
     }
 }
@@ -469,7 +498,6 @@ function toggleLoop() {
 
 /**
  * 次のトラックへ
- * 【✅ 修正】シャッフルロジックを追加
  */
 function nextTrack() {
     if (isShuffle && shuffledList.length > 0) {
@@ -492,12 +520,12 @@ function nextTrack() {
     }
     
     loadTrack(currentTrackIndex);
-    playPauseTrack();
+    // 【✅ 修正】loadTrack内で自動再生を試みるため、ここでは不要
+    // playPauseTrack(); 
 }
 
 /**
  * 前のトラックへ
- * 【✅ 修正】シャッフルロジックを追加
  */
 function prevTrack() {
     if (isShuffle && shuffledList.length > 0) {
@@ -517,7 +545,8 @@ function prevTrack() {
     }
 
     loadTrack(currentTrackIndex);
-    playPauseTrack();
+    // 【✅ 修正】loadTrack内で自動再生を試みるため、ここでは不要
+    // playPauseTrack();
 }
 
 // --- イベントリスナー ---
