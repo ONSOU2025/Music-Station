@@ -339,8 +339,13 @@ function renderPlaylist() {
 
 /**
  * トラックをロードし、プレイヤーUIを更新
+ * 【✅ 修正】再生中に曲を変更した際のバグを防ぐため、最初にオーディオを停止する処理を追加
  */
 function loadTrack(index) {
+    // 既存の再生を停止し、バグを防ぐ
+    audio.pause();
+    audio.currentTime = 0; // 再生位置をリセット
+
     currentTrackIndex = index;
     const track = trackList[index];
     
@@ -373,9 +378,8 @@ function loadTrack(index) {
     const currentItem = document.querySelector(`.music-item[data-index="${index}"]`);
     if (currentItem) {
         currentItem.classList.add('active');
-        if (isPlaying) { 
-             currentItem.querySelector('.play-icon').classList.replace('fa-play-circle', 'fa-pause-circle');
-        }
+        // loadTrackの後にすぐに再生される可能性があるため、isPlayingの状態はここではチェックしない
+        // 再生はクリックイベントやplayPauseTrack()に任せる
     }
 }
 
