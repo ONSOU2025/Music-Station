@@ -579,6 +579,53 @@ volumeSlider.addEventListener('input', (e) => {
 });
 
 
+// ----------------------------------------------------------------------
+// --- 【✨ 新規追加】キーボード操作のロジック ---
+// ----------------------------------------------------------------------
+
+document.addEventListener('keydown', (e) => {
+    // ユーザーがフォーム要素にフォーカスしている場合は、キーボード操作を無視
+    if (e.target.matches('input, textarea, select')) {
+        return;
+    }
+
+    switch (e.key) {
+        case ' ': // スペースキー: 再生/一時停止
+            e.preventDefault(); // スペースキーによるスクロールを防ぐ
+            playPauseTrack();
+            break;
+
+        case 'ArrowRight': // 右矢印: 次のトラック
+            e.preventDefault(); 
+            nextTrack();
+            break;
+
+        case 'ArrowLeft': // 左矢印: 前のトラック
+            e.preventDefault();
+            prevTrack();
+            break;
+            
+        case 'ArrowUp': // 上矢印: 音量を上げる
+            e.preventDefault();
+            // 現在の音量 + 0.05 (最大1.0)
+            audio.volume = Math.min(1.0, audio.volume + 0.05);
+            volumeSlider.value = audio.volume;
+            // UIも更新
+            volumeSlider.style.setProperty('--volume-progress', `${audio.volume * 100}%`);
+            break;
+
+        case 'ArrowDown': // 下矢印: 音量を下げる
+            e.preventDefault();
+            // 現在の音量 - 0.05 (最小0.0)
+            audio.volume = Math.max(0.0, audio.volume - 0.05);
+            volumeSlider.value = audio.volume;
+            // UIも更新
+            volumeSlider.style.setProperty('--volume-progress', `${audio.volume * 100}%`);
+            break;
+    }
+});
+
+
 // --- 初期化 ---
 document.addEventListener('DOMContentLoaded', () => {
     // 音楽プレイヤーの初期化
