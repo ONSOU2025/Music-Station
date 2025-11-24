@@ -262,7 +262,7 @@ const trackList = [
         composer: 'POLAN',  //作曲者
         chartMaker: 'メリークルシミマス╰(*°▽°*)╯',  //譜面制作者
         description: '初めに追加されたULTIMATE楽曲の一つで、6鍵の譜面を使用する。'
-    },
+    }
     /*
     { 
         title: 'テストソング 1 (オリジナルGM)',  //曲名
@@ -668,4 +668,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
 
