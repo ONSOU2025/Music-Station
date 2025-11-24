@@ -210,7 +210,7 @@ const trackList = [
     },
     { 
         title: 'R.N.A',  //曲名
-        artist: 'PORAN',  //楽曲クリエイター
+        artist: 'POLAN',  //楽曲クリエイター
         duration: '2:13',  //曲の時間
         // 🚨 ここを新しいサーバーの楽曲URLに変更してください
         src: 'https://onsou2025.github.io/Music-Station/Music/R.N.A.mp3',  //楽曲URL
@@ -251,6 +251,17 @@ const trackList = [
         composer: 'カンキツ',  //作曲者
         chartMaker: '?？?',  //譜面制作者
         description: '?❓?'
+    },
+    { 
+        title: 'メ、メ、メリークリスマス',  //曲名
+        artist: 'POLAN',  //楽曲クリエイター
+        duration: '2:13',  //曲の時間
+        // 🚨 ここを新しいサーバーの楽曲URLに変更してください
+        src: 'https://onsou2025.github.io/Music-Station/Music/メ、メ、メリークリスマス.mp3',  //楽曲URL
+        art: 'https://onsou2025.github.io/Music-Station/images/メ、メ、メリークリスマス.png', //楽曲画像
+        composer: 'POLAN',  //作曲者
+        chartMaker: 'メリークルシミマス╰(*°▽°*)╯',  //譜面制作者
+        description: '初めに追加されたULTIMATE楽曲の一つで、6鍵の譜面を使用する。'
     },
     /*
     { 
@@ -657,3 +668,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
